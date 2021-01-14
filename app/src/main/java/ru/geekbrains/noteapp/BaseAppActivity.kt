@@ -38,8 +38,14 @@ class BaseAppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
-            R.id.action_search -> true
+            R.id.action_settings -> {
+                createAlertDialog(R.string.action_settings)
+                true
+            }
+            R.id.action_search -> {
+                createAlertDialog(R.string.action_search)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

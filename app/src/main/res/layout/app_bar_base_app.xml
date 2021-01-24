@@ -16,7 +16,7 @@
         android:layout_margin="@dimen/fab_margin"
 
         android:src="@android:drawable/ic_input_add"
-        app:tint="?android:textColorSecondary"/>
+        android:tint="@color/primaryTextColor"/>
 
     <include layout="@layout/content_base_app" />
 

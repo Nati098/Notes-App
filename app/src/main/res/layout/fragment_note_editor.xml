@@ -25,17 +25,20 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_btn_speak_now"/>
+                android:layout_width="40dp"
+                android:layout_height="36dp"
+                android:src="@android:drawable/ic_btn_speak_now"
+                android:tint="@color/primaryTextColor" />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_gallery"/>
+                android:src="@drawable/ic_insert_photo"
+                android:tint="@color/primaryTextColor"/>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_sort_by_size"/>
+                android:src="@drawable/ic_check_box"
+                android:tint="@color/primaryTextColor"/>
 
         </LinearLayout>
 

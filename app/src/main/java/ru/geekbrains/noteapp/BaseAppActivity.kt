@@ -1,17 +1,23 @@
 package ru.geekbrains.noteapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import ru.geekbrains.noteapp.fragment.NoteFragment
+import ru.geekbrains.noteapp.model.Repository
+import ru.geekbrains.noteapp.model.Repository.LoggerMode.DEBUG
+import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
 
-class BaseAppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class BaseAppActivity : AppCompatActivity(), OpenFragmentListener, NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +25,7 @@ class BaseAppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         setSupportActionBar(findViewById(R.id.toolbar))
 
         bindView()
+        addFragment(NoteFragment.newInstance(Repository.notes))
     }
 
     private fun bindView() {
@@ -34,6 +41,44 @@ class BaseAppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu_main, menu)
         return true
+    }
+
+    override fun addFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment, fragment)
+            .commit()
+    }
+
+    override fun addFragment(id: Int, fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(id, fragment)
+            .commit()
+    }
+
+    override fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment, fragment)
+            .addToBackStack(fragment.tag)
+            .commit()
+    }
+
+    override fun onBackPressed() {
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_activity_baseapp)
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START)
+        } else {
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                super.onBackPressed()
+            } else {
+                supportFragmentManager.popBackStack()
+            }
+            if (DEBUG) {
+                Log.d(
+                    "BaseAppActivity",
+                    "onBackPressed -> remained in stack: " + supportFragmentManager.backStackEntryCount
+                )
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,7 +105,7 @@ class BaseAppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
             else -> createAlertDialog(R.string.error_wrong_menu_item)
         }
 
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_activity_main)
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_activity_baseapp)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }

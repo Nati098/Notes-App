@@ -1,7 +1,7 @@
 package ru.geekbrains.noteapp.model.data
 
+import java.io.Serializable
+
 class Note (val title : String,
             val content : String,
-            val color : Int = 0) {
-
-}
+            val color : Color = Color.YELLOW) : Serializable

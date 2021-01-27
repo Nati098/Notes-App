@@ -17,7 +17,8 @@ import ru.geekbrains.noteapp.model.Repository
 import ru.geekbrains.noteapp.model.Repository.LoggerMode.DEBUG
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
 
-class BaseAppActivity : AppCompatActivity(), OpenFragmentListener, NavigationView.OnNavigationItemSelectedListener {
+class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
+    NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +26,7 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener, NavigationVie
         setSupportActionBar(findViewById(R.id.toolbar))
 
         bindView()
-        addFragment(NoteFragment.newInstance(Repository.notes))
+        addFragment(NoteFragment.newInstance())
     }
 
     private fun bindView() {
@@ -34,7 +35,7 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener, NavigationVie
 
         findViewById<FloatingActionButton>(R.id.fab_base_app).setOnClickListener { view ->
             Snackbar.make(view, "Floating Button was pressed", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
     }
 
@@ -110,13 +111,13 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener, NavigationVie
         return true
     }
 
-    private fun createAlertDialog(stringId : Int) {
+    private fun createAlertDialog(stringId: Int) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(stringId)
-                .setMessage(stringId)
+            .setMessage(stringId)
 //                .setIcon(drawableId)
-                .setCancelable(true)
-                .setPositiveButton(R.string.button_ok, { dialog, id -> })
+            .setCancelable(true)
+            .setPositiveButton(R.string.button_ok, { dialog, id -> })
         val alert = builder.create()
         alert.show()
     }

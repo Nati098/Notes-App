@@ -4,7 +4,7 @@ import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 
 object Repository {
-    const val NOTES_BUNDLE = "notes_bundle"
+    const val VIEW_MODEL_BUNDLE = "view_model_bundle"
 
     val notes : List<Note>
 

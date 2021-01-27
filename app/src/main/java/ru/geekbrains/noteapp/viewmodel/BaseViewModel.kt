@@ -9,16 +9,15 @@ import ru.geekbrains.noteapp.model.data.Note
 
 class BaseViewModel : ViewModel() {
 
-    private val viewStateLiveData : MutableLiveData<BaseViewState> = MutableLiveData()
-
+    private val viewStateLiveData: MutableLiveData<BaseViewState> = MutableLiveData()
 
     init {
         viewStateLiveData.value = BaseViewState(Repository.notes)
     }
 
-    fun viewState() : LiveData<BaseViewState> = viewStateLiveData
+    fun viewState(): LiveData<BaseViewState> = viewStateLiveData
 
-    fun changeState(notes : List<Note>) {
+    fun changeState(notes: List<Note>) {
         viewStateLiveData.value = BaseViewState(notes)
     }
 }

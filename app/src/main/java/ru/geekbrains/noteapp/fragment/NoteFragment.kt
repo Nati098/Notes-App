@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.geekbrains.noteapp.BaseViewState
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.adapter.NoteAdapter
-import ru.geekbrains.noteapp.model.Repository.NOTES_BUNDLE
+import ru.geekbrains.noteapp.model.Repository.VIEW_MODEL_BUNDLE
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.BaseViewModel
 import java.io.Serializable
@@ -19,8 +19,8 @@ import java.io.Serializable
 
 class NoteFragment : Fragment() {
 
-    lateinit var viewModel : BaseViewModel
-    lateinit var noteAdapter : NoteAdapter
+    lateinit var viewModel: BaseViewModel
+    lateinit var noteAdapter: NoteAdapter
     lateinit var notesRecycler: RecyclerView
 
     override fun onCreateView(
@@ -38,14 +38,12 @@ class NoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let { args ->
-            args.getSerializable(NOTES_BUNDLE)?.let {
-                viewModel.changeState(it as List<Note>)
-            }
+        arguments?.getSerializable(VIEW_MODEL_BUNDLE)?.let {
+            viewModel.changeState(it as List<Note>)
         }
     }
 
-    private fun bindView(view : View) {
+    private fun bindView(view: View) {
         noteAdapter = NoteAdapter()
         notesRecycler = view.findViewById(R.id.recycler_notes)
         notesRecycler.adapter = noteAdapter
@@ -63,13 +61,7 @@ class NoteFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(notes : List<Note>) : NoteFragment{
-            val arguments = Bundle()
-            arguments.putSerializable(NOTES_BUNDLE, notes as Serializable)
-            val fragment = NoteFragment()
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance(): NoteFragment = NoteFragment()
     }
 
 }

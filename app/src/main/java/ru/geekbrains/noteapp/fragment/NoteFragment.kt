@@ -10,11 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.geekbrains.noteapp.BaseViewState
 import ru.geekbrains.noteapp.R
+import ru.geekbrains.noteapp.VIEW_MODEL_BUNDLE
 import ru.geekbrains.noteapp.adapter.NoteAdapter
-import ru.geekbrains.noteapp.model.Repository.VIEW_MODEL_BUNDLE
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.BaseViewModel
-import java.io.Serializable
 
 
 class NoteFragment : Fragment() {

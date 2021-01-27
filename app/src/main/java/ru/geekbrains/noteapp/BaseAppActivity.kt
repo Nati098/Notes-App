@@ -12,9 +12,8 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import ru.geekbrains.noteapp.LoggerMode.DEBUG
 import ru.geekbrains.noteapp.fragment.NoteFragment
-import ru.geekbrains.noteapp.model.Repository
-import ru.geekbrains.noteapp.model.Repository.LoggerMode.DEBUG
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
 
 class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,

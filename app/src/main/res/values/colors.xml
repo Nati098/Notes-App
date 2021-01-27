@@ -8,4 +8,9 @@
   <color name="secondaryDarkColor">#ad7172</color>
   <color name="primaryTextColor">#000000</color>
   <color name="secondaryTextColor">#000000</color>
+
+
+  <color name="color_yellow">#f9e79f</color>
+  <color name="color_purple">#e8daef</color>
+  <color name="color_white">#f4f6f7</color>
 </resources>

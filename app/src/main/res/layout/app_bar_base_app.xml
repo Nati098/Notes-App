@@ -8,15 +8,24 @@
 
     <include layout="@layout/toolbar"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/app_bar_base_app">
+
+        <include layout="@layout/content_base_app" />
+
+    </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_base_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/primaryLightColor"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/primaryTextColor"/>
-
-    <include layout="@layout/content_base_app" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

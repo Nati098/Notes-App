@@ -13,4 +13,7 @@
 
     <string name="error_wrong_menu_item">Wrong menu item id</string>
 
+    <string name="note_title_hint">Title</string>
+    <string name="note_content_hint">Note\'s text</string>
+
 </resources>

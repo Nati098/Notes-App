@@ -8,11 +8,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_note_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:hardwareAccelerated="true"
+        android:theme="@style/AppLightTheme">
         <activity
             android:name=".BaseAppActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppLightTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

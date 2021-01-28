@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import ru.geekbrains.noteapp.R
+import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 
 
-class NoteAdapter: RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+class NoteAdapter(private val listener: OnItemClickListener): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
      var values: List<Note> = listOf()
         set(value) {
@@ -36,7 +37,14 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
             with(item) {
                 titleTextView.text = title
                 contentView.text = content
-                view.setBackgroundColor(color.code)
+
+                val color = when(item.color) {
+                    Color.WHITE -> R.color.color_white
+                    Color.PURPLE -> R.color.color_purple
+                    Color.YELLOW -> R.color.color_yellow
+                }
+                view.setBackgroundResource(color)
+                view.setOnClickListener{listener.onItemClick(item)}
             }
         }
 
@@ -44,4 +52,9 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
             return super.toString() + " '" + contentView.text + "'"
         }
     }
+}
+
+
+interface OnItemClickListener {
+    fun onItemClick(note: Note)
 }

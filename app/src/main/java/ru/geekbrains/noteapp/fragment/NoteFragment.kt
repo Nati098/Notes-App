@@ -1,5 +1,6 @@
 package ru.geekbrains.noteapp.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,10 @@ import ru.geekbrains.noteapp.BaseViewState
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.VIEW_MODEL_BUNDLE
 import ru.geekbrains.noteapp.adapter.NoteAdapter
+import ru.geekbrains.noteapp.adapter.OnItemClickListener
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.BaseViewModel
+import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
 
 
 class NoteFragment : Fragment() {
@@ -21,6 +24,8 @@ class NoteFragment : Fragment() {
     lateinit var viewModel: BaseViewModel
     lateinit var noteAdapter: NoteAdapter
     lateinit var notesRecycler: RecyclerView
+
+    private var openFragmentListener: OpenFragmentListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +47,19 @@ class NoteFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OpenFragmentListener) {
+            openFragmentListener = context
+        }
+    }
+
     private fun bindView(view: View) {
-        noteAdapter = NoteAdapter()
+        noteAdapter = NoteAdapter(object: OnItemClickListener{
+            override fun onItemClick(note: Note) {
+                openNoteEditor(note)
+            }
+        })
         notesRecycler = view.findViewById(R.id.recycler_notes)
         notesRecycler.adapter = noteAdapter
     }
@@ -55,7 +71,10 @@ class NoteFragment : Fragment() {
                 noteAdapter.values = state.notes
             }
         })
+    }
 
+    private fun openNoteEditor(note: Note) {
+        openFragmentListener?.replaceFragment(NoteEditorFragment.newInstance(note))
     }
 
     companion object {

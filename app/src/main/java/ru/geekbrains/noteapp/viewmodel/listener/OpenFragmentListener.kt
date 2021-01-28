@@ -8,5 +8,5 @@ interface OpenFragmentListener {
     fun addFragment(id: Int, fragment: Fragment)
 
     fun replaceFragment(fragment: Fragment)
-
+    fun popBackStack()
 }

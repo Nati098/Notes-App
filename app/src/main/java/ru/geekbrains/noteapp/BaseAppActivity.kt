@@ -13,7 +13,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import ru.geekbrains.noteapp.LoggerMode.DEBUG
+import ru.geekbrains.noteapp.fragment.NoteEditorFragment
 import ru.geekbrains.noteapp.fragment.NoteFragment
+import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
 
 class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
@@ -33,6 +35,7 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
         navigationView.setNavigationItemSelectedListener(this)
 
         findViewById<FloatingActionButton>(R.id.fab_base_app).setOnClickListener { view ->
+//            replaceFragment(NoteEditorFragment.newInstance(Note()))
             Snackbar.make(view, "Floating Button was pressed", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
@@ -61,6 +64,8 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
             .addToBackStack(fragment.tag)
             .commit()
     }
+
+    override fun popBackStack() = onBackPressed()
 
     override fun onBackPressed() {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_activity_baseapp)

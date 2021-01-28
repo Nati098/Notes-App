@@ -64,6 +64,10 @@ class NoteFragment : Fragment() {
         })
         notesRecycler = view.findViewById(R.id.recycler_notes)
         notesRecycler.adapter = noteAdapter
+
+        view.findViewById<FloatingActionButton>(R.id.fab_base_app).setOnClickListener { v ->
+            openNoteEditor()
+        }
     }
 
     private fun initViewModel() {
@@ -75,7 +79,7 @@ class NoteFragment : Fragment() {
         })
     }
 
-    private fun openNoteEditor(note: Note) {
+    private fun openNoteEditor(note: Note? = null) {
         openFragmentListener?.replaceFragment(NoteEditorFragment.newInstance(note))
     }
 

@@ -85,7 +85,7 @@ class NoteEditorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         note = arguments?.getParcelable(NOTE_BUNDLE)
-        
+
         initView()
     }
 
@@ -130,6 +130,7 @@ class NoteEditorFragment : Fragment() {
                 .setTitle(getString(R.string.alert_dialog_title_save))
                 .setPositiveButton(R.string.button_yes) { dialog, which ->
                     // TODO: save note
+                    saveNote()
                     openFragmentListener?.popBackStack()
                 }
                 .setNegativeButton(R.string.button_no) { _, _ -> openFragmentListener?.popBackStack() }
@@ -157,7 +158,7 @@ class NoteEditorFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(note: Note?): NoteEditorFragment {
+        fun newInstance(note: Note? = null): NoteEditorFragment {
             val arguments = Bundle()
             arguments.putParcelable(NOTE_BUNDLE, note)
             val fragment = NoteEditorFragment()

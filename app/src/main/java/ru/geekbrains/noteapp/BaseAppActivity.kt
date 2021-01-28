@@ -33,12 +33,6 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
     private fun bindView() {
         val navigationView = findViewById<NavigationView>(R.id.nav_view_main)
         navigationView.setNavigationItemSelectedListener(this)
-
-        findViewById<FloatingActionButton>(R.id.fab_base_app).setOnClickListener { view ->
-//            replaceFragment(NoteEditorFragment.newInstance(Note()))
-            Snackbar.make(view, "Floating Button was pressed", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

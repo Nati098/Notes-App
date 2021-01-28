@@ -6,18 +6,19 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import ru.geekbrains.noteapp.DATE_TIME_FORMAT
 import ru.geekbrains.noteapp.NOTE_BUNDLE
 import ru.geekbrains.noteapp.R
-import ru.geekbrains.noteapp.SAVE_DELAY
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.NoteViewModel
@@ -26,18 +27,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+private const val SAVE_DELAY = 2000L
+
 class NoteEditorFragment : Fragment() {
 
     private var note: Note? = null
     private lateinit var layout: CoordinatorLayout
-//    private lateinit var toolbar: Toolbar
+
+    //    private lateinit var toolbar: Toolbar
     private lateinit var titleInput: TextInputEditText
     private lateinit var contentInput: EditText
 
     private var openFragmentListener: OpenFragmentListener? = null
     private lateinit var viewModel: NoteViewModel
 
-    private val textChangedListener = object: TextWatcher {
+    private val textChangedListener = object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {
             saveNote()
         }
@@ -67,7 +71,6 @@ class NoteEditorFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         bindView(view)
-        initView()
 
         return view
     }
@@ -82,6 +85,8 @@ class NoteEditorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         note = arguments?.getParcelable(NOTE_BUNDLE)
+        
+        initView()
     }
 
     private fun bindView(view: View) {
@@ -94,7 +99,9 @@ class NoteEditorFragment : Fragment() {
     }
 
     private fun initView() {
+        Log.d("EDITOR", note.toString())
         note?.let {
+            Log.d("EDITOR", it.title)
             titleInput.setText(it.title)
             contentInput.setText(it.content)
 
@@ -106,6 +113,9 @@ class NoteEditorFragment : Fragment() {
 
             layout.setBackgroundResource(color)     // TODO: doesn't work!!
         }
+
+        titleInput.addTextChangedListener(textChangedListener)
+        contentInput.addTextChangedListener(textChangedListener)
 
 //        toolbar.title = if (note != null) {
 //                SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(note!!.lastChanged)
@@ -132,14 +142,15 @@ class NoteEditorFragment : Fragment() {
     private fun saveNote() {
         if (titleInput.text == null || titleInput.text!!.isEmpty()) return
 
-        Handler(Looper.getMainLooper()).postDelayed(object: Runnable {
+        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
-                note = note?.copy(title = titleInput.text.toString(),
-                                    content = contentInput.text.toString(),
-                                    lastChanged = Date()
+                note = note?.copy(
+                    title = titleInput.text.toString(),
+                    content = contentInput.text.toString(),
+                    lastChanged = Date()
                 )
 
-                if (note != null) viewModel.saveChanges(note!!)
+                note?.let { viewModel.saveChanges(it) }
             }
         }, SAVE_DELAY)
     }

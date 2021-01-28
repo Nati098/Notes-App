@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import ru.geekbrains.noteapp.BaseViewState
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.VIEW_MODEL_BUNDLE
@@ -27,6 +29,13 @@ class NoteFragment : Fragment() {
 
     private var openFragmentListener: OpenFragmentListener? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OpenFragmentListener) {
+            openFragmentListener = context
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,13 +53,6 @@ class NoteFragment : Fragment() {
 
         arguments?.getSerializable(VIEW_MODEL_BUNDLE)?.let {
             viewModel.changeState(it as List<Note>)
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OpenFragmentListener) {
-            openFragmentListener = context
         }
     }
 

@@ -5,33 +5,40 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_base_app.view.*
+import kotlinx.android.synthetic.main.toolbar.view.*
 import ru.geekbrains.noteapp.LoggerMode.DEBUG
-import ru.geekbrains.noteapp.fragment.NoteEditorFragment
+import ru.geekbrains.noteapp.databinding.ActivityBaseAppBinding
 import ru.geekbrains.noteapp.fragment.NoteFragment
 import ru.geekbrains.noteapp.model.data.Note
+import ru.geekbrains.noteapp.viewmodel.viewmodel.BaseViewModel
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
+import ru.geekbrains.noteapp.viewmodel.viewstate.BaseViewState
 
-class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
+
+class BaseAppActivity : BaseActivity<List<Note>?, BaseViewState>(), OpenFragmentListener,
     NavigationView.OnNavigationItemSelectedListener {
+
+    override val viewModel: BaseViewModel by lazy {ViewModelProvider(this).get(
+        BaseViewModel::class.java)}
+    override val layoutRes: Int = R.layout.activity_base_app
+    override val ui: ViewBinding = ActivityBaseAppBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base_app)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(ui.root.toolbar)
 
         bindView()
         addFragment(NoteFragment.newInstance())
     }
 
     private fun bindView() {
-        val navigationView = findViewById<NavigationView>(R.id.nav_view_main)
+        val navigationView = (ui.root.nav_view_main)
         navigationView.setNavigationItemSelectedListener(this)
     }
 
@@ -62,7 +69,7 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
     override fun popBackStack() = onBackPressed()
 
     override fun onBackPressed() {
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_activity_baseapp)
+        val drawer = (ui.root.drawer_layout_activity_baseapp)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {
@@ -104,7 +111,7 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
             else -> createAlertDialog(R.string.error_wrong_menu_item)
         }
 
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout_activity_baseapp)
+        val drawer = (ui.root.drawer_layout_activity_baseapp)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
@@ -118,5 +125,11 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
             .setPositiveButton(R.string.button_ok, { dialog, id -> })
         val alert = builder.create()
         alert.show()
+    }
+
+    override fun onDataExist(data: List<Note>?) {
+        if (data == null) return
+
+        // render data here
     }
 }

@@ -27,6 +27,7 @@
         app:layout_anchorGravity="bottom|end"
         app:layout_behavior=".animation.FABBehaviour"
         android:backgroundTint="@color/primaryLightColor"
+        app:borderWidth="0dp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/primaryTextColor"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

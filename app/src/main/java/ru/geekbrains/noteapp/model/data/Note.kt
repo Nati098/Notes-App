@@ -6,9 +6,9 @@ import java.util.*
 
 @Parcelize
 data class Note(
-    val id: String,
-    val title: String,
-    val content: String,
+    val id: String = "",
+    val title: String = "",
+    val content: String = "",
     val color: Color = Color.YELLOW,
     val lastChanged: Date = Date()
 ) : Parcelable {

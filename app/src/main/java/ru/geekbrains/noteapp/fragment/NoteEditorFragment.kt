@@ -10,20 +10,16 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
-import ru.geekbrains.noteapp.DATE_TIME_FORMAT
 import ru.geekbrains.noteapp.NOTE_BUNDLE
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
-import ru.geekbrains.noteapp.viewmodel.NoteViewModel
+import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteViewModel
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
-import java.text.SimpleDateFormat
 import java.util.*
 
 

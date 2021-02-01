@@ -1,40 +1,18 @@
 package ru.geekbrains.noteapp.model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
-import java.util.*
+import ru.geekbrains.noteapp.model.firebase.RemoteDataProvider
+import ru.geekbrains.noteapp.model.firebase.RemoteDataProviderImpl
+
 
 object Repository {
 
-    private val notes: MutableList<Note> = mutableListOf(
-        Note(UUID.randomUUID().toString(), "title1", "sofsdsdnskf", Color.YELLOW),
-        Note(UUID.randomUUID().toString(), "title2", "dsfoenenen", Color.PURPLE),
-        Note(UUID.randomUUID().toString(), "title3", "asdasdavewe", Color.WHITE)
-    )
+    private val remoteDataProvider: RemoteDataProvider = RemoteDataProviderImpl()
 
-    private val notesLiveData = MutableLiveData<List<Note>>()
+    fun getNotes() = remoteDataProvider.subscribeToAllNotes()
 
-    init {
-        notesLiveData.value = notes
-    }
+    fun saveNote(note: Note) = remoteDataProvider.saveNote(note)
 
-    fun getNotes(): LiveData<List<Note>> = notesLiveData
+    fun getNoteById(id: String) = remoteDataProvider.getNoteById(id)
 
-    fun saveNote(note: Note) {
-        addOrReplace(note)
-        notesLiveData.value = notes
-    }
-
-    private fun addOrReplace(note: Note) {
-        for (i in 0 until notes.size) {
-            if (notes[i] == note) {
-                notes[i] = note
-                return
-            }
-        }
-
-        notes.add(note)
-    }
 }

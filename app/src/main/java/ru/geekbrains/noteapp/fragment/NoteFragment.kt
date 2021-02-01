@@ -10,14 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import ru.geekbrains.noteapp.BaseViewState
+import ru.geekbrains.noteapp.viewmodel.viewstate.BaseViewState
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.VIEW_MODEL_BUNDLE
 import ru.geekbrains.noteapp.adapter.NoteAdapter
 import ru.geekbrains.noteapp.adapter.OnItemClickListener
 import ru.geekbrains.noteapp.model.data.Note
-import ru.geekbrains.noteapp.viewmodel.BaseViewModel
+import ru.geekbrains.noteapp.viewmodel.viewmodel.BaseViewModel
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
 
 
@@ -73,8 +72,8 @@ class NoteFragment : Fragment() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         viewModel.viewState().observe(viewLifecycleOwner, Observer<BaseViewState> { state ->
-            state?.let {
-                noteAdapter.values = state.notes
+            state.notes?.let {
+                noteAdapter.values = it
             }
         })
     }

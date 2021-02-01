@@ -1,6 +1,5 @@
 package ru.geekbrains.noteapp.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,32 +10,31 @@ import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.fragment_note_editor.view.*
 import ru.geekbrains.noteapp.NOTE_BUNDLE
 import ru.geekbrains.noteapp.R
+import ru.geekbrains.noteapp.databinding.FragmentNoteEditorBinding
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
-import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteViewModel
-import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
+import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteEditorViewModel
+import ru.geekbrains.noteapp.viewstate.NoteEditorViewState
 import java.util.*
 
 
 private const val SAVE_DELAY = 2000L
 
-class NoteEditorFragment : Fragment() {
+class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
 
-    private var note: Note? = null
-    private lateinit var layout: CoordinatorLayout
+    override val viewModel: NoteEditorViewModel by lazy { ViewModelProvider(this).get(NoteEditorViewModel::class.java) }
+    override val layoutRes: Int = R.layout.fragment_note_editor
+    override var _ui: ViewBinding? = FragmentNoteEditorBinding.inflate(layoutInflater)
 
     //    private lateinit var toolbar: Toolbar
-    private lateinit var titleInput: TextInputEditText
-    private lateinit var contentInput: EditText
 
-    private var openFragmentListener: OpenFragmentListener? = null
-    private lateinit var viewModel: NoteViewModel
-
+    private var note: Note? = null
     private val textChangedListener = object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {
             saveNote()
@@ -49,28 +47,6 @@ class NoteEditorFragment : Fragment() {
         }
     }
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OpenFragmentListener) {
-            openFragmentListener = context
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_note_editor, container, false)
-        setHasOptionsMenu(true)
-
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-
-        bindView(view)
-
-        return view
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.toolbar_note_menu, menu)
@@ -80,26 +56,24 @@ class NoteEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        note = arguments?.getParcelable(NOTE_BUNDLE)
+        val noteId = arguments?.getString(NOTE_BUNDLE)
+        noteId?.let {
+            viewModel.loadNote(it)
+        }
 
-        initView()
+        // if (noteId != null) action bar title = "Edit note"
     }
 
-    private fun bindView(view: View) {
-        layout = view.findViewById(R.id.layout_note_editor)
-
-//        toolbar = view.findViewById(R.id.toolbar)
-
-        titleInput = view.findViewById(R.id.text_input_note_title)
-        contentInput = view.findViewById(R.id.edit_text_note_content)
+    override fun bindView(view: View) {
+//        toolbar = ui.root..toolbar
     }
 
     private fun initView() {
         Log.d("EDITOR", note.toString())
         note?.let {
             Log.d("EDITOR", it.title)
-            titleInput.setText(it.title)
-            contentInput.setText(it.content)
+            ui.root.text_input_note_title.setText(it.title)
+            ui.root.edit_text_note_content.setText(it.content)
 
             val color = when (it.color) {
                 Color.WHITE -> R.color.color_white
@@ -107,11 +81,11 @@ class NoteEditorFragment : Fragment() {
                 Color.YELLOW -> R.color.color_yellow
             }
 
-            layout.setBackgroundResource(color)     // TODO: doesn't work!!
+            ui.root.layout_note_editor.setBackgroundResource(color)
         }
 
-        titleInput.addTextChangedListener(textChangedListener)
-        contentInput.addTextChangedListener(textChangedListener)
+        ui.root.text_input_note_title.addTextChangedListener(textChangedListener)
+        ui.root.edit_text_note_content.addTextChangedListener(textChangedListener)
 
 //        toolbar.title = if (note != null) {
 //                SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(note!!.lastChanged)
@@ -120,12 +94,16 @@ class NoteEditorFragment : Fragment() {
 //        }
     }
 
+    override fun onDataExist(data: Note?) {
+        note = data
+        initView()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_save -> {
             val builder = AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.alert_dialog_title_save))
                 .setPositiveButton(R.string.button_yes) { dialog, which ->
-                    // TODO: save note
                     saveNote()
                     openFragmentListener?.popBackStack()
                 }
@@ -136,16 +114,24 @@ class NoteEditorFragment : Fragment() {
         else -> super.onOptionsItemSelected(item)
     }
 
+    private fun createNote() : Note = Note(
+        id = UUID.randomUUID().toString(),
+        title = ui.root.text_input_note_title.text.toString(),
+        content = ui.root.edit_text_note_content.text.toString(),
+        color = Color.YELLOW,       // TODO: choice of colors
+        lastChanged = Date()
+    )
+
     private fun saveNote() {
-        if (titleInput.text == null || titleInput.text!!.isEmpty()) return
+        if (ui.root.text_input_note_title.text == null || ui.root.edit_text_note_content.text!!.isEmpty()) return
 
         Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
                 note = note?.copy(
-                    title = titleInput.text.toString(),
-                    content = contentInput.text.toString(),
+                    title = ui.root.text_input_note_title.text.toString(),
+                    content = ui.root.edit_text_note_content.text.toString(),
                     lastChanged = Date()
-                )
+                ) ?: createNote()
 
                 note?.let { viewModel.saveChanges(it) }
             }
@@ -154,9 +140,9 @@ class NoteEditorFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(note: Note? = null): NoteEditorFragment {
+        fun newInstance(noteId: String? = null): NoteEditorFragment {
             val arguments = Bundle()
-            arguments.putParcelable(NOTE_BUNDLE, note)
+            arguments.putString(NOTE_BUNDLE, noteId)
             val fragment = NoteEditorFragment()
             fragment.arguments = arguments
             return fragment

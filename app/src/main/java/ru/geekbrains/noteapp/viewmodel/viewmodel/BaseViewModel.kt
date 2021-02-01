@@ -1,42 +1,14 @@
 package ru.geekbrains.noteapp.viewmodel.viewmodel
 
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import ru.geekbrains.noteapp.viewstate.BaseViewState
-import ru.geekbrains.noteapp.model.Repository
-import ru.geekbrains.noteapp.model.data.Note
-import ru.geekbrains.noteapp.model.firebase.NoteResult
 
-class BaseViewModel(private val repository: Repository = Repository) : CustomViewModel<List<Note>?, BaseViewState>() {
+open class BaseViewModel<T, VS : BaseViewState<T>> : ViewModel() {
 
-    private val repoNotes = repository.getNotes()
-    private val notesObserver = object : Observer<NoteResult> {
-        override fun onChanged(t: NoteResult?) {
-            if (t == null) return
+    protected val viewStateLiveData: MutableLiveData<VS> = MutableLiveData()
 
-            when (t) {
-                is NoteResult.Success<*> -> viewStateLiveData.value =
-                    BaseViewState(t.data as? List<Note>)
-                is NoteResult.Error -> viewStateLiveData.value =
-                    BaseViewState(error = t.error)
-            }
-        }
-    }
+    fun viewState(): LiveData<VS> = viewStateLiveData
 
-    init {
-        viewStateLiveData.value =
-            BaseViewState()
-        repoNotes.observeForever(notesObserver)
-    }
-
-    override fun onCleared() {
-        repoNotes.removeObserver(notesObserver)
-    }
-
-    //    init {
-//        viewStateLiveData.value = BaseViewState()
-//    }
-//
-//    fun changeState(notes: List<Note>) {
-//        viewStateLiveData.value = BaseViewState(notes)
-//    }
 }

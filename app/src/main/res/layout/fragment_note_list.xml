@@ -15,7 +15,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:context=".fragment.NoteFragment"
+        tools:context=".fragment.NoteListFragment"
         tools:listitem="@layout/fragment_note_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

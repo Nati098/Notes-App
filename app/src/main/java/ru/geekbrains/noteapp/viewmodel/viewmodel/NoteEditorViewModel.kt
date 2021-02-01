@@ -4,9 +4,9 @@ import androidx.lifecycle.Observer
 import ru.geekbrains.noteapp.model.Repository
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.model.firebase.NoteResult
-import ru.geekbrains.noteapp.viewstate.NoteViewState
+import ru.geekbrains.noteapp.viewstate.NoteEditorViewState
 
-class NoteViewModel(private val repository: Repository = Repository) : CustomViewModel<Note?, NoteViewState>() {
+class NoteEditorViewModel(private val repository: Repository = Repository) : BaseViewModel<Note?, NoteEditorViewState>() {
 
     private var pendingNote: Note? = null
 
@@ -26,8 +26,8 @@ class NoteViewModel(private val repository: Repository = Repository) : CustomVie
                 if (t == null) return
 
                 when (t) {
-                    is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(t.data as? Note)
-                    is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = t.error)
+                    is NoteResult.Success<*> -> viewStateLiveData.value = NoteEditorViewState(t.data as? Note)
+                    is NoteResult.Error -> viewStateLiveData.value = NoteEditorViewState(error = t.error)
                 }
             }
         })

@@ -6,19 +6,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
-import ru.geekbrains.noteapp.viewmodel.viewmodel.CustomViewModel
-import ru.geekbrains.noteapp.viewstate.CustomViewState
+import ru.geekbrains.noteapp.viewmodel.viewmodel.BaseViewModel
+import ru.geekbrains.noteapp.viewstate.BaseViewState
 
 
-abstract class CustomActivity<T, VS : CustomViewState<T>> : AppCompatActivity() {
+abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
 
-    abstract val viewModel: CustomViewModel<T, VS>
+    abstract val viewModel: BaseViewModel<T, VS>
     abstract val layoutRes: Int
     abstract val ui: ViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-//        createUi()
         setContentView(ui.root)
 
         viewModel.viewState().observe(this, object : Observer<VS> {
@@ -28,11 +27,8 @@ abstract class CustomActivity<T, VS : CustomViewState<T>> : AppCompatActivity() 
                 if (state.error != null) onError(state.error)
             }
         })
-
-
     }
 
-//    abstract fun createUi()
     abstract fun onDataExist(data: T)
 
     protected fun onError(error: Throwable) {

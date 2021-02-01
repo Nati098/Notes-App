@@ -18,10 +18,10 @@ import ru.geekbrains.noteapp.fragment.NoteFragment
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.viewmodel.BaseViewModel
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
-import ru.geekbrains.noteapp.viewmodel.viewstate.BaseViewState
+import ru.geekbrains.noteapp.viewstate.BaseViewState
 
 
-class BaseAppActivity : BaseActivity<List<Note>?, BaseViewState>(), OpenFragmentListener,
+class BaseAppActivity : CustomActivity<List<Note>?, BaseViewState>(), OpenFragmentListener,
     NavigationView.OnNavigationItemSelectedListener {
 
     override val viewModel: BaseViewModel by lazy {ViewModelProvider(this).get(

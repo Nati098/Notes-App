@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import ru.geekbrains.noteapp.viewmodel.viewmodel.CustomViewModel
-import ru.geekbrains.noteapp.viewmodel.viewstate.CustomViewState
+import ru.geekbrains.noteapp.viewstate.CustomViewState
 
 
-abstract class BaseActivity<T, VS : CustomViewState<T>> : AppCompatActivity() {
+abstract class CustomActivity<T, VS : CustomViewState<T>> : AppCompatActivity() {
 
     abstract val viewModel: CustomViewModel<T, VS>
     abstract val layoutRes: Int

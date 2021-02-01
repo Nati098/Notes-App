@@ -1,11 +1,10 @@
 package ru.geekbrains.noteapp.viewmodel.viewmodel
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import ru.geekbrains.noteapp.model.Repository
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.model.firebase.NoteResult
-import ru.geekbrains.noteapp.viewmodel.viewstate.NoteViewState
+import ru.geekbrains.noteapp.viewstate.NoteViewState
 
 class NoteViewModel(private val repository: Repository = Repository) : CustomViewModel<Note?, NoteViewState>() {
 

@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.geekbrains.noteapp.viewmodel.viewstate.BaseViewState
+import ru.geekbrains.noteapp.viewstate.BaseViewState
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.VIEW_MODEL_BUNDLE
 import ru.geekbrains.noteapp.adapter.NoteAdapter

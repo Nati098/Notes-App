@@ -1,4 +1,4 @@
-package ru.geekbrains.noteapp.viewmodel.viewstate
+package ru.geekbrains.noteapp.viewstate
 
 import ru.geekbrains.noteapp.model.data.Note
 

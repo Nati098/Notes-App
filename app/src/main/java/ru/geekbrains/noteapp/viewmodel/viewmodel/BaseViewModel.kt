@@ -1,7 +1,7 @@
 package ru.geekbrains.noteapp.viewmodel.viewmodel
 
 import androidx.lifecycle.Observer
-import ru.geekbrains.noteapp.viewmodel.viewstate.BaseViewState
+import ru.geekbrains.noteapp.viewstate.BaseViewState
 import ru.geekbrains.noteapp.model.Repository
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.model.firebase.NoteResult

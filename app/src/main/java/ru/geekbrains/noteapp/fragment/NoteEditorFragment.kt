@@ -9,14 +9,13 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_note_editor.view.*
 import ru.geekbrains.noteapp.NOTE_BUNDLE
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.databinding.FragmentNoteEditorBinding
+import ru.geekbrains.noteapp.databinding.FragmentNoteListBinding
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteEditorViewModel
@@ -30,7 +29,7 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
 
     override val viewModel: NoteEditorViewModel by lazy { ViewModelProvider(this).get(NoteEditorViewModel::class.java) }
     override val layoutRes: Int = R.layout.fragment_note_editor
-    override var _ui: ViewBinding? = FragmentNoteEditorBinding.inflate(layoutInflater)
+    lateinit override var _ui: ViewBinding
 
     //    private lateinit var toolbar: Toolbar
 
@@ -45,6 +44,11 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _ui = FragmentNoteEditorBinding.inflate(inflater)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

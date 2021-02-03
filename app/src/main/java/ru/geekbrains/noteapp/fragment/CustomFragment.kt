@@ -20,7 +20,7 @@ abstract class CustomFragment <T, VS : BaseViewState<T>> : Fragment() {
     abstract val viewModel: BaseViewModel<T, VS>
     abstract val layoutRes: Int
 
-    abstract protected var _ui: ViewBinding?
+    abstract protected var _ui: ViewBinding
     val ui get() = _ui!!
 
     protected var openFragmentListener: OpenFragmentListener? = null
@@ -51,10 +51,10 @@ abstract class CustomFragment <T, VS : BaseViewState<T>> : Fragment() {
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _ui = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _ui = null
+//    }
 
     abstract fun bindView(view: View)
 

@@ -1,6 +1,9 @@
 package ru.geekbrains.noteapp.fragment
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -18,7 +21,7 @@ class NoteListFragment : CustomFragment<List<Note>?, NoteListViewState>() {
 
     override val viewModel: NoteListViewModel by lazy {ViewModelProvider(this).get(NoteListViewModel::class.java)}
     override val layoutRes: Int = R.layout.fragment_note_list
-    override var _ui: ViewBinding? = FragmentNoteListBinding.inflate(layoutInflater)
+    lateinit override var _ui: ViewBinding
 
     lateinit var noteAdapter: NoteAdapter
     lateinit var notesRecycler: RecyclerView
@@ -30,6 +33,11 @@ class NoteListFragment : CustomFragment<List<Note>?, NoteListViewState>() {
 //            viewModel.changeState(it as List<Note>)
 //        }
 //    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _ui = FragmentNoteListBinding.inflate(inflater)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun bindView(view: View) {
         noteAdapter = NoteAdapter(object: OnItemClickListener{

@@ -11,7 +11,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.geekbrains.noteapp.viewstate.NoteListViewState
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.adapter.NoteAdapter
-import ru.geekbrains.noteapp.adapter.OnItemClickListener
 import ru.geekbrains.noteapp.databinding.FragmentNoteListBinding
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteListViewModel
@@ -26,25 +25,15 @@ class NoteListFragment : CustomFragment<List<Note>?, NoteListViewState>() {
     lateinit var noteAdapter: NoteAdapter
     lateinit var notesRecycler: RecyclerView
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        arguments?.getSerializable(VIEW_MODEL_BUNDLE)?.let {
-//            viewModel.changeState(it as List<Note>)
-//        }
-//    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _ui = FragmentNoteListBinding.inflate(inflater)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun bindView(view: View) {
-        noteAdapter = NoteAdapter(object: OnItemClickListener{
-            override fun onItemClick(note: Note) {
-                openNoteEditorScreen(note)
-            }
-        })
+        noteAdapter = NoteAdapter { note: Note ->
+            openNoteEditorScreen(note)
+        }
         notesRecycler = view.findViewById(R.id.recycler_notes)
         notesRecycler.adapter = noteAdapter
 
@@ -52,14 +41,6 @@ class NoteListFragment : CustomFragment<List<Note>?, NoteListViewState>() {
             openNoteEditorScreen()
         }
     }
-
-//    private fun initViewModel() {
-//        viewModel.viewState().observe(viewLifecycleOwner, Observer<BaseViewState> { state ->
-//            state.notes?.let {
-//                noteAdapter.values = it
-//            }
-//        })
-//    }
 
     override fun onDataExist(data: List<Note>?) {
         data?.let {

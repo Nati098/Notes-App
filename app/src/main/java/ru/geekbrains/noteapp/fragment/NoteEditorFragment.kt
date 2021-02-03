@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
@@ -15,7 +14,6 @@ import kotlinx.android.synthetic.main.fragment_note_editor.view.*
 import ru.geekbrains.noteapp.NOTE_BUNDLE
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.databinding.FragmentNoteEditorBinding
-import ru.geekbrains.noteapp.databinding.FragmentNoteListBinding
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteEditorViewModel
@@ -129,8 +127,7 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
     private fun saveNote() {
         if (ui.root.text_input_note_title.text == null || ui.root.edit_text_note_content.text!!.isEmpty()) return
 
-        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-            override fun run() {
+        Handler(Looper.getMainLooper()).postDelayed( {
                 note = note?.copy(
                     title = ui.root.text_input_note_title.text.toString(),
                     content = ui.root.edit_text_note_content.text.toString(),
@@ -138,8 +135,7 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
                 ) ?: createNote()
 
                 note?.let { viewModel.saveChanges(it) }
-            }
-        }, SAVE_DELAY)
+            }, SAVE_DELAY)
     }
 
     companion object {

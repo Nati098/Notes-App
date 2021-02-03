@@ -6,6 +6,7 @@ import ru.geekbrains.noteapp.model.Repository
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.model.firebase.NoteResult
 
+
 class NoteListViewModel(private val repository: Repository = Repository) : BaseViewModel<List<Note>?, NoteListViewState>() {
 
     private val repoNotes = repository.getNotes()
@@ -32,11 +33,4 @@ class NoteListViewModel(private val repository: Repository = Repository) : BaseV
         repoNotes.removeObserver(notesObserver)
     }
 
-    //    init {
-//        viewStateLiveData.value = BaseViewState()
-//    }
-//
-//    fun changeState(notes: List<Note>) {
-//        viewStateLiveData.value = BaseViewState(notes)
-//    }
 }

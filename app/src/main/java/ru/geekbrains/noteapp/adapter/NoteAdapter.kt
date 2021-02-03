@@ -10,7 +10,7 @@ import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 
 
-class NoteAdapter(private val listener: OnItemClickListener): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+class NoteAdapter(private val listener: (Note) -> Unit): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
      var values: List<Note> = listOf()
         set(value) {
@@ -44,7 +44,7 @@ class NoteAdapter(private val listener: OnItemClickListener): RecyclerView.Adapt
                     Color.YELLOW -> R.color.color_yellow
                 }
                 view.setBackgroundResource(color)
-                view.setOnClickListener{listener.onItemClick(item)}
+                view.setOnClickListener{listener(item)}
             }
         }
 
@@ -52,9 +52,4 @@ class NoteAdapter(private val listener: OnItemClickListener): RecyclerView.Adapt
             return super.toString() + " '" + contentView.text + "'"
         }
     }
-}
-
-
-interface OnItemClickListener {
-    fun onItemClick(note: Note)
 }

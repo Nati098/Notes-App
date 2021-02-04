@@ -37,7 +37,7 @@ class NoteListFragment : CustomFragment<List<Note>?, NoteListViewState>() {
         notesRecycler = view.findViewById(R.id.recycler_notes)
         notesRecycler.adapter = noteAdapter
 
-        view.findViewById<FloatingActionButton>(R.id.fab_base_app).setOnClickListener { v ->
+        view.findViewById<FloatingActionButton>(R.id.fab_base_app).setOnClickListener {
             openNoteEditorScreen()
         }
     }
@@ -48,9 +48,8 @@ class NoteListFragment : CustomFragment<List<Note>?, NoteListViewState>() {
         }
     }
 
-    private fun openNoteEditorScreen(note: Note? = null) {
+    private fun openNoteEditorScreen(note: Note? = null) =
         openFragmentListener?.replaceFragment(NoteEditorFragment.newInstance(note?.id))
-    }
 
     companion object {
         @JvmStatic

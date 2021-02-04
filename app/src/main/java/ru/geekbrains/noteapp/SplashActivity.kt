@@ -3,7 +3,7 @@ package ru.geekbrains.noteapp
 import android.os.Bundle
 
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity<>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

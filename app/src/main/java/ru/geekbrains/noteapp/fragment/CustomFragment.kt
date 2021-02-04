@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.viewbinding.ViewBinding
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.viewmodel.listener.OpenFragmentListener
@@ -21,7 +21,7 @@ abstract class CustomFragment <T, VS : BaseViewState<T>> : Fragment() {
     abstract val layoutRes: Int
 
     abstract protected var _ui: ViewBinding
-    val ui get() = _ui!!
+    val ui get() = _ui
 
     protected var openFragmentListener: OpenFragmentListener? = null
 
@@ -36,13 +36,12 @@ abstract class CustomFragment <T, VS : BaseViewState<T>> : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel.viewState().observe(this, object : Observer<VS> {
-            override fun onChanged(state: VS?) {
-                if (state == null) return
-                if (state.data != null) onDataExist(state.data)
-                if (state.error != null) onError(state.error)
+        viewModel.viewState().observe(this) { state ->
+            state.apply {
+                data?.let {onDataExist(it)}
+                error?.let {onError(it)}
             }
-        })
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,15 +60,11 @@ abstract class CustomFragment <T, VS : BaseViewState<T>> : Fragment() {
     abstract fun onDataExist(data: T)
 
     protected fun onError(error: Throwable) {
-        if (error.message != null) showMessage(error.message!!)
+        error.message?.let { showMessage(it) }
     }
 
-    protected fun showMessage(msg: String) {
-        val builder = AlertDialog.Builder(ui.root.context)
-        builder.setTitle(msg)
-            .setCancelable(false)
-            .setPositiveButton(R.string.button_ok) { dialog, id -> }
-        val alert = builder.create()
-        alert.show()
-    }
+    protected fun showMessage(msg: String) = AlertDialog.Builder(ui.root.context)
+        .setTitle(msg)
+        .setCancelable(false)
+        .setPositiveButton(R.string.button_ok) { dialog, id -> }.create().show()
 }

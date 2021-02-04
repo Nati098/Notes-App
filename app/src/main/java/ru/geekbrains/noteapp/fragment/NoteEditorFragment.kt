@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_note_editor.view.*
 import ru.geekbrains.noteapp.NOTE_BUNDLE
 import ru.geekbrains.noteapp.R
 import ru.geekbrains.noteapp.databinding.FragmentNoteEditorBinding
+import ru.geekbrains.noteapp.getColorRes
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 import ru.geekbrains.noteapp.viewmodel.viewmodel.NoteEditorViewModel
@@ -33,15 +34,9 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
 
     private var note: Note? = null
     private val textChangedListener = object : TextWatcher {
-        override fun afterTextChanged(p0: Editable?) {
-            saveNote()
-        }
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        }
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        }
+        override fun afterTextChanged(p0: Editable?) = saveNote()
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,9 +56,9 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
         val noteId = arguments?.getString(NOTE_BUNDLE)
         noteId?.let {
             viewModel.loadNote(it)
+        } ?: kotlin.run {
+//            action bar set title getString(R.string.new_note_title)
         }
-
-        // if (noteId != null) action bar title = "Edit note"
     }
 
     override fun bindView(view: View) {
@@ -72,28 +67,17 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
 
     private fun initView() {
         Log.d("EDITOR", note.toString())
-        note?.let {
-            Log.d("EDITOR", it.title)
-            ui.root.text_input_note_title.setText(it.title)
-            ui.root.edit_text_note_content.setText(it.content)
+        note?.run {
+            Log.d("EDITOR", title)
+            ui.root.text_input_note_title.setText(title)
+            ui.root.edit_text_note_content.setText(content)
+            ui.root.layout_note_editor.setBackgroundResource(color.getColorRes(this@NoteEditorFragment.requireContext()))
 
-            val color = when (it.color) {
-                Color.WHITE -> R.color.color_white
-                Color.PURPLE -> R.color.color_purple
-                Color.YELLOW -> R.color.color_yellow
-            }
-
-            ui.root.layout_note_editor.setBackgroundResource(color)
+//        toolbar.title = note!!.lastChanged.format()
         }
 
         ui.root.text_input_note_title.addTextChangedListener(textChangedListener)
         ui.root.edit_text_note_content.addTextChangedListener(textChangedListener)
-
-//        toolbar.title = if (note != null) {
-//                SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(note!!.lastChanged)
-//            } else {
-//            getString(R.string.new_note_title)
-//        }
     }
 
     override fun onDataExist(data: Note?) {
@@ -103,20 +87,20 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_save -> {
-            val builder = AlertDialog.Builder(requireContext())
+            AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.alert_dialog_title_save))
                 .setPositiveButton(R.string.button_yes) { dialog, which ->
                     saveNote()
                     openFragmentListener?.popBackStack()
                 }
                 .setNegativeButton(R.string.button_no) { _, _ -> openFragmentListener?.popBackStack() }
-            builder.show()
+                .show()
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun createNote() : Note = Note(
+    private fun createNote(): Note = Note(
         id = UUID.randomUUID().toString(),
         title = ui.root.text_input_note_title.text.toString(),
         content = ui.root.edit_text_note_content.text.toString(),
@@ -127,15 +111,15 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
     private fun saveNote() {
         if (ui.root.text_input_note_title.text == null || ui.root.edit_text_note_content.text!!.isEmpty()) return
 
-        Handler(Looper.getMainLooper()).postDelayed( {
-                note = note?.copy(
-                    title = ui.root.text_input_note_title.text.toString(),
-                    content = ui.root.edit_text_note_content.text.toString(),
-                    lastChanged = Date()
-                ) ?: createNote()
+        Handler(Looper.getMainLooper()).postDelayed({
+            note = note?.copy(
+                title = ui.root.text_input_note_title.text.toString(),
+                content = ui.root.edit_text_note_content.text.toString(),
+                lastChanged = Date()
+            ) ?: createNote()
 
-                note?.let { viewModel.saveChanges(it) }
-            }, SAVE_DELAY)
+            note?.let { viewModel.saveChanges(it) }
+        }, SAVE_DELAY)
     }
 
     companion object {

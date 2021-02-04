@@ -35,12 +35,7 @@ abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
         if (error.message != null) showMessage(error.message!!)
     }
 
-    protected fun showMessage(msg: String) {
-        val builder = AlertDialog.Builder(ui.root.context)
-        builder.setTitle(msg)
-            .setCancelable(false)
-            .setPositiveButton(R.string.button_ok) { dialog, id -> }
-        val alert = builder.create()
-        alert.show()
-    }
+    protected fun showMessage(msg: String) = AlertDialog.Builder(ui.root.context).setTitle(msg)
+        .setCancelable(false)
+        .setPositiveButton(R.string.button_ok) { dialog, id -> }.create().show()
 }

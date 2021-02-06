@@ -1,5 +1,4 @@
 package ru.geekbrains.noteapp.viewstate
 
 
-class SplashViewState(val data: ? = null, error: Throwable? = null) : BaseViewState<>(data, error) {
-}
+class SplashViewState(val isAuth: Boolean? = null, error: Throwable? = null) : BaseViewState<Boolean?>(isAuth, error)

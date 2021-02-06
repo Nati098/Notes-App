@@ -31,7 +31,7 @@ abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
 
     abstract fun onDataExist(data: T)
 
-    protected fun onError(error: Throwable) {
+    protected open fun onError(error: Throwable) {
         if (error.message != null) showMessage(error.message!!)
     }
 

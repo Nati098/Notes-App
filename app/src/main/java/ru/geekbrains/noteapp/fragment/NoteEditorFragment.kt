@@ -104,7 +104,7 @@ class NoteEditorFragment : CustomFragment<Note?, NoteEditorViewState>() {
         id = UUID.randomUUID().toString(),
         title = ui.root.text_input_note_title.text.toString(),
         content = ui.root.edit_text_note_content.text.toString(),
-        color = Color.YELLOW,       // TODO: choice of colors
+        color = Color.YELLOW,
         lastChanged = Date()
     )
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import ru.geekbrains.noteapp.R
+import ru.geekbrains.noteapp.getColorRes
 import ru.geekbrains.noteapp.model.data.Color
 import ru.geekbrains.noteapp.model.data.Note
 
@@ -38,12 +39,7 @@ class NoteAdapter(private val listener: (Note) -> Unit): RecyclerView.Adapter<No
                 titleTextView.text = title
                 contentView.text = content
 
-                val color = when(item.color) {
-                    Color.WHITE -> R.color.color_white
-                    Color.PURPLE -> R.color.color_purple
-                    Color.YELLOW -> R.color.color_yellow
-                }
-                view.setBackgroundResource(color)
+                view.setBackgroundResource(item.color.getColorRes(view.context))
                 view.setOnClickListener{listener(item)}
             }
         }

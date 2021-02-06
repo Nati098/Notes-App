@@ -30,7 +30,5 @@ data class Note(
 }
 
 enum class Color {
-    YELLOW,
-    PURPLE,
-    WHITE
+    YELLOW, PURPLE, WHITE, GREEN, BLUE
 }

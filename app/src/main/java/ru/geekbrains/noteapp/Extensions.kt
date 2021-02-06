@@ -24,4 +24,6 @@ fun Color.getColorRes(context: Context) : Int =
         Color.WHITE -> R.color.color_white
         Color.PURPLE -> R.color.color_purple
         Color.YELLOW -> R.color.color_yellow
+        Color.BLUE -> R.color.color_blue
+        Color.GREEN -> R.color.color_green
     })

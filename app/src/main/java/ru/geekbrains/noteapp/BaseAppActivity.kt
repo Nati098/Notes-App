@@ -1,5 +1,7 @@
 package ru.geekbrains.noteapp
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -115,5 +117,9 @@ class BaseAppActivity : AppCompatActivity(), OpenFragmentListener,
             .setPositiveButton(R.string.button_ok, { dialog, id -> })
         val alert = builder.create()
         alert.show()
+    }
+
+    companion object {
+        fun getStartIntent(context: Context) = Intent(context, BaseAppActivity::class.java)
     }
 }
